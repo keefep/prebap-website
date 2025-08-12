@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre‑Baptism Program Scheduler – Archdiocese of Bombay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <div class="brand-title">Archdiocese of Bombay</div>
+          <div class="brand-sub">Pre‑Baptism Program Scheduler</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <div id="userInfo" class="user-info" style="display: none;">
+          <span id="userName"></span>
+          <button id="logoutBtn" class="btn ghost small">Logout</button>
+        </div>
+        <button id="loginBtn" class="btn primary">Login</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Login / Register</h2>
+          <button class="close-btn" id="closeLoginModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="auth-tabs">
+            <button class="tab-btn active" data-tab="login">Login</button>
+            <button class="tab-btn" data-tab="register">Register</button>
+          </div>
+          
+          <form id="loginForm" class="auth-form">
+            <label>Email<input type="email" name="email" required /></label>
+            <label>Password<input type="password" name="password" required /></label>
+            <button type="submit" class="btn primary">Login</button>
+          </form>
+          
+          <form id="registerForm" class="auth-form" style="display: none;">
+            <label>Full Name<input type="text" name="fullName" required /></label>
+            <label>Email<input type="email" name="email" required /></label>
+            <label>Phone<input type="tel" name="phone" required /></label>
+            <label>Parish<input type="text" name="parish" required /></label>
+            <label>Role
+              <select name="role" required>
+                <option value="">Select role</option>
+                <option value="coordinator">Pre-Bap Coordinator</option>
+                <option value="priest">Priest</option>
+                <option value="team-leader">Team Leader</option>
+                <option value="participant">Participant</option>
+              </select>
+            </label>
+            <label>Password<input type="password" name="password" required minlength="6" /></label>
+            <label>Confirm Password<input type="password" name="confirmPassword" required /></label>
+            <button type="submit" class="btn primary">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Profile</h2>
+          <button class="close-btn" id="closeProfileModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="profileForm" class="profile-form">
+            <div class="grid-2">
+              <label>Full Name<input type="text" name="fullName" required /></label>
+              <label>Phone<input type="tel" name="phone" required /></label>
+              <label>Parish<input type="text" name="parish" required /></label>
+              <label>Role<input type="text" name="role" readonly /></label>
+            </div>
+            <label>Bio<textarea name="bio" rows="3" placeholder="Tell us about yourself and your role in the Pre-Bap program..."></textarea></label>
+            <button type="submit" class="btn primary">Update Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal" style="display: none;">
+      <div class="modal-content chat-modal">
+        <div class="modal-header">
+          <h2>Chat with <span id="chatUserName"></span></h2>
+          <button class="close-btn" id="closeChatModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="chat-container">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+              <input type="text" id="chatInput" placeholder="Type your message..." />
+              <button id="sendChatBtn" class="btn primary">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" style="display: none;">
+      <section class="section">
+        <div class="container">
+          <div class="dashboard-header">
+            <h1>Welcome, <span id="welcomeUserName"></span></h1>
+            <div class="dashboard-actions">
+              <button id="profileBtn" class="btn ghost">Edit Profile</button>
+              <button id="addEventBtn" class="btn primary">Add Event</button>
+            </div>
+          </div>
+
+          <!-- Calendar View -->
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <button id="prevMonth" class="btn ghost">&lt;</button>
+              <h2 id="currentMonth"></h2>
+              <button id="nextMonth" class="btn ghost">&gt;</button>
+            </div>
+            <div class="calendar-grid">
+              <div class="calendar-weekdays">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+              </div>
+              <div id="calendarDays" class="calendar-days"></div>
+            </div>
+          </div>
+
+          <!-- Events List -->
+          <div class="events-section">
+            <h3>Upcoming Events</h3>
+            <div id="eventsList" class="events-list"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Add Event Modal -->
+    <div id="addEventModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Pre-Bap Event</h2>
+          <button class="close-btn" id="closeAddEventModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="addEventForm" class="event-form">
+            <div class="grid-2">
+              <label>Event Title<input type="text" name="title" required placeholder="e.g., Session 1: Introduction" /></label>
+              <label>Date<input type="date" name="date" required /></label>
+            </div>
+            <div class="grid-2">
+              <label>Start Time<input type="time" name="startTime" required /></label>
+              <label>End Time<input type="time" name="endTime" required /></label>
+            </div>
+            <label>Location<input type="text" name="location" placeholder="e.g., Parish Hall" /></label>
+            <label>Description<textarea name="description" rows="3" placeholder="Event details, what participants will learn..."></textarea></label>
+            <label>Event Type
+              <select name="eventType" required>
+                <option value="">Select type</option>
+                <option value="session">Course Session</option>
+                <option value="orientation">Orientation</option>
+                <option value="baptism">Baptism Ceremony</option>
+                <option value="meeting">Team Meeting</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <button type="submit" class="btn primary">Add Event</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+      <section class="section">
+        <div class="container">
+          <div class="welcome-content">
+            <h1>Pre‑Baptism Program Scheduler</h1>
+            <p>Connect with your parish community and coordinate Pre-Baptism programs effectively.</p>
+            <div class="welcome-features">
+              <div class="feature">
+                <div class="feature-icon">📅</div>
+                <h3>Calendar Management</h3>
+                <p>Schedule and view all Pre-Bap events in one place</p>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">👥</div>
+                <h3>Community Connect</h3>
+                <p>Chat with other coordinators and team members</p>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Real-time Updates</h3>
+                <p>Stay informed about program changes and updates</p>
+              </div>
+            </div>
+            <button id="getStartedBtn" class="btn primary large">Get Started</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand-foot-title">Archdiocese of Bombay</div>
+        <div class="brand-foot-sub">Pre‑Baptism Program</div>
+      </div>
+      <div class="copyright">© <span id="yearNow"></span> Archdiocese of Bombay</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
