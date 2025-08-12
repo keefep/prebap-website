@@ -70,7 +70,7 @@ async function register(userData) {
     formData.append('role', userData.role);
     formData.append('bio', userData.bio || '');
     
-    const response = await fetch('https://script.google.com/macros/s/AKfycbyJYT2Vig9dtaibIHI_TNbkCBfUGVANMynGj3TOraHYoUMNS3H7mfqw0Micnphm_yTuTw/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbzzoZE_3T8XYr_riERzcfBRvqt6Ldmn1hr61pdqLccCpt77Mq0mGVEatLYfy5PoPBbJhg/exec', {
       method: 'POST',
       body: formData  // No headers, just form data
     });
